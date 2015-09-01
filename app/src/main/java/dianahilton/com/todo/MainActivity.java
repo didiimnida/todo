@@ -1,5 +1,6 @@
 package dianahilton.com.todo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private final int REQUEST_CODE = 20;
     ArrayList<String> todoItems;
     ArrayAdapter<String> aToDoAdapter;
     ListView lvItems;
@@ -40,6 +43,25 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this, EditItemActivity.class);
+                String todoItem = todoItems.get(position);
+                intent.putExtra("position", position);
+                intent.putExtra("todoItem", todoItem);
+                startActivityForResult(intent, REQUEST_CODE);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            String todoItem = data.getExtras().getString("todoItem");
+            int position = data.getExtras().getInt("position", 0);
+            todoItems.set(position, todoItem);
+            aToDoAdapter.notifyDataSetChanged();
+            writeItems();
     }
 
     public void populateArrayItems(){
