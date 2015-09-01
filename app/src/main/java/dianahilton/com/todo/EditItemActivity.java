@@ -25,6 +25,7 @@ public class EditItemActivity extends AppCompatActivity {
         final EditText reEditText = (EditText) findViewById(R.id.reEditText);
 
         reEditText.setText(todoItem);
+        reEditText.setSelection(reEditText.getText().length());
 
         reEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
